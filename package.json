@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -13,6 +15,10 @@
     "nuxt": "^3.11.2",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^0.3.13",
+    "eslint": "^9.3.0"
   },
   "packageManager": "pnpm@9.0.6"
 }
