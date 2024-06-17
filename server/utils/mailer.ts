@@ -19,12 +19,15 @@ export async function getMailer() {
     },
     secure: true,
   })
-  const ok = await transporter.verify()
-  if (ok) {
-    mailer = transporter
-    console.info(`mailer is init success with ${config.sendmailUser}`)
-    return mailer
-  }
 
-  return null
+  transporter.verify(function (error) {
+    if (error) {
+      console.error(error)
+    }
+    else {
+      console.info(`${config.sendmailUser} : the mail server is ready to take our messages`)
+    }
+  })
+  mailer = transporter
+  return mailer
 }
