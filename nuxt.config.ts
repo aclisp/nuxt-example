@@ -7,4 +7,8 @@ export default defineNuxtConfig({
       stylistic: true,
     },
   },
+  runtimeConfig: {
+    sendmailUser: '',
+    sendmailPass: '',
+  },
 })
