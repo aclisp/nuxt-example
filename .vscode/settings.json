@@ -1,5 +1,8 @@
 {
     // Enable ESlint flat config support
     "eslint.experimental.useFlatConfig": true,
-    "eslint.format.enable": true
+    "eslint.format.enable": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
 }
