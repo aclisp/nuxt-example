@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <UContainer>
     一些通用设置。
-  </div>
+  </UContainer>
 </template>

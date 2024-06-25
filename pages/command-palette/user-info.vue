@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <UContainer>
     个人信息和设置。
-  </div>
+  </UContainer>
 </template>
