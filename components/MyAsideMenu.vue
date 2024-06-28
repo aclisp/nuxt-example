@@ -10,7 +10,7 @@ const icon = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="z-50">
     <!-- mobile screens -->
     <div class="fixed sm:hidden left-0">
       <UPopover v-model:open="open">
@@ -23,6 +23,6 @@ const icon = computed(() => {
       </UPopover>
     </div>
     <!-- desktop screens -->
-    <UVerticalNavigation class="hidden sm:block flex-none overflow-y-auto h-[calc(100vh-7rem)] sticky top-16 w-40" v-bind="$attrs" />
+    <UVerticalNavigation class="hidden sm:block flex-none overflow-y-auto h-[calc(100vh-8rem)] sticky top-16 w-40" v-bind="$attrs" />
   </div>
 </template>

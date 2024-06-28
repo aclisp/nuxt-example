@@ -1,4 +1,14 @@
 <script setup lang="ts">
+useHead({
+  title: 'Email Engine',
+  meta: [
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1, viewport-fit=cover',
+    },
+  ],
+})
+
 const topMenus = [
   [{
     label: '邮件引擎 (Email Engine) ',
@@ -23,4 +33,6 @@ const topMenus = [
     <MyHeader :links="topMenus" />
     <NuxtPage />
   </UContainer>
+
+  <UNotifications />
 </template>
