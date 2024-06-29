@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { readMe } from '@directus/sdk'
 
-definePageMeta({
-  middleware: 'auth',
-})
+definePageMeta({ middleware: 'auth' })
 
 const token = await directus.getToken()
 
 const data = await directus.request(readMe({
   fields: ['*', 'role.name'],
 }))
+
+const avatar = fileIdToURL(data.avatar, token)
+const login = useLogin()
+login.value = { isLoggedIn: true, name: data.first_name, avatar }
+
+async function logout() {
+  await directus.logout()
+  login.value = { isLoggedIn: false, name: '', avatar: '' }
+  await navigateTo('/login', { replace: true })
+}
 </script>
 
 <template>
@@ -28,7 +36,7 @@ const data = await directus.request(readMe({
         <UInput :value="data.location" icon="i-heroicons-map-pin" />
       </UFormGroup>
       <UFormGroup label="Avatar">
-        <NuxtImg height="12rem" :src="`${fileIdToURL(data.avatar, token)}`" />
+        <NuxtImg class="w-1/2" :src="avatar" />
       </UFormGroup>
       <UFormGroup label="Role">
         <UInput :value="data.role.name" icon="i-heroicons-user-group" />
@@ -37,5 +45,8 @@ const data = await directus.request(readMe({
         <UInput :value="data.status" icon="i-heroicons-check" />
       </UFormGroup>
     </div>
+    <UButton icon="i-heroicons-arrow-right-end-on-rectangle" class="mt-4" @click="logout">
+      Logout
+    </UButton>
   </UContainer>
 </template>
