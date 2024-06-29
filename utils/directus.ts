@@ -4,16 +4,28 @@ import type { AuthenticationStorage, AuthenticationData } from '@directus/sdk'
 export const DIRECTUS_URL = 'http://192.168.0.109:8055'
 
 const storage = () => {
+  let store: AuthenticationData | null = null
   const KEY = 'znbcwrefjgfsltiu'
+
   const get = async () => {
-    if (import.meta.server) return null
+    if (import.meta.server) {
+      return store
+    }
+
     const item = localStorage.getItem(KEY)
     if (!item) return null
     return JSON.parse(item) as AuthenticationData
   }
+
   const set = async (value: AuthenticationData | null) => {
+    if (import.meta.server) {
+      store = value
+      return
+    }
+
     localStorage.setItem(KEY, JSON.stringify(value))
   }
+
   return { get, set } as AuthenticationStorage
 }
 
