@@ -42,6 +42,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 <template>
   <UContainer class="flex max-w-xs h-[calc(100vh-10rem)]">
     <UForm :schema="schema" :state="state" class="w-full my-auto space-y-4" @submit="onSubmit">
+      <MySection>请先登录</MySection>
       <UFormGroup label="Email" name="email">
         <UInput v-model="state.email" autocomplete="on" />
       </UFormGroup>

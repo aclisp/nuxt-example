@@ -22,6 +22,7 @@ async function logout() {
 
 <template>
   <UContainer>
+    <MySection>您已登录</MySection>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <UFormGroup label="Email">
         <UInput :value="data.email" icon="i-heroicons-envelope" />
@@ -45,7 +46,10 @@ async function logout() {
         <UInput :value="data.status" icon="i-heroicons-check" />
       </UFormGroup>
     </div>
-    <UButton icon="i-heroicons-arrow-right-end-on-rectangle" class="mt-4" @click="logout">
+    <MySection class="mt-4">
+      更多操作
+    </MySection>
+    <UButton icon="i-heroicons-arrow-right-end-on-rectangle" @click="logout">
       Logout
     </UButton>
   </UContainer>

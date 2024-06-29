@@ -1,8 +1,6 @@
 <template>
   <UContainer>
-    <h1 class="text-lg font-bold mb-4">
-      数据总览
-    </h1>
+    <MySection>数据总览</MySection>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Laoreet sit amet cursus sit amet dictum. Mollis nunc sed id semper. Neque egestas congue quisque egestas diam in arcu cursus. Ut morbi tincidunt augue interdum velit. Risus pretium quam vulputate dignissim suspendisse in. Id neque aliquam vestibulum morbi blandit cursus risus at ultrices. Et malesuada fames ac turpis egestas. Pellentesque nec nam aliquam sem. Quis ipsum suspendisse ultrices gravida dictum fusce ut. Massa sapien faucibus et molestie. Lectus nulla at volutpat diam ut. Aliquam sem fringilla ut morbi. Sit amet tellus cras adipiscing enim eu. Hac habitasse platea dictumst quisque. Placerat vestibulum lectus mauris ultrices eros in cursus turpis massa. Volutpat odio facilisis mauris sit amet massa vitae. Quis viverra nibh cras pulvinar mattis nunc sed. Tempor commodo ullamcorper a lacus vestibulum sed arcu non odio. Et tortor at risus viverra adipiscing at in.
 
