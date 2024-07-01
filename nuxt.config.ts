@@ -11,5 +11,7 @@ export default defineNuxtConfig({
     sendmailUser: '',
     sendmailPass: '',
     encryptPassword: '',
+    directusServerToken: '',
+    defaultRoleId: '',
   },
 })

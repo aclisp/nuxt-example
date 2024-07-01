@@ -27,7 +27,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   const { ok, msg } = await $fetch('/api/register', { method: 'POST', body: event.data })
   let timeout, callback
   if (ok) {
-    timeout = 2000
+    timeout = 4000
     callback = () => {
       navigateTo('/login')
     }

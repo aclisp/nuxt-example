@@ -9,6 +9,16 @@ const storage = () => {
 
   const get = async () => {
     if (import.meta.server) {
+      if (store === null) {
+        const { directusServerToken } = useRuntimeConfig()
+        store = {
+          access_token: directusServerToken,
+          refresh_token: null,
+          expires: null,
+          expires_at: null,
+        }
+      }
+
       return store
     }
 

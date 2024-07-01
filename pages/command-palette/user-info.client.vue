@@ -37,7 +37,7 @@ async function logout() {
         <UInput :value="data.location" icon="i-heroicons-map-pin" />
       </UFormGroup>
       <UFormGroup label="Avatar">
-        <NuxtImg class="w-1/2" :src="avatar" />
+        <img class="w-1/2" :src="avatar">
       </UFormGroup>
       <UFormGroup label="Role">
         <UInput :value="data.role.name" icon="i-heroicons-user-group" />
