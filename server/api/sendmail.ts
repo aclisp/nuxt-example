@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     })
   }
   catch (e) {
+    console.trace(String(e))
     return { error: String(e) }
   }
   return { ok: true }
