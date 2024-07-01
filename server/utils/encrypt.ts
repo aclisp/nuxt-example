@@ -2,7 +2,6 @@ import { scryptSync, randomFillSync, createCipheriv, createDecipheriv } from 'no
 
 const algorithm = 'aes-192-cbc'
 const keylength = 24 // The key length is dependent on the algorithm.
-const password = 'vmks;fr#$%^ndf^*GVaf11[s^)zsHY2ZVa13'
 const salt = 'KlsdERv1'
 const encoding = 'base64url'
 const ivlength = 16
@@ -14,7 +13,8 @@ type Encrypted = {
 }
 
 export function _encrypt(text: string): Encrypted {
-  const key = scryptSync(password, salt, keylength)
+  const { encryptPassword } = useRuntimeConfig()
+  const key = scryptSync(encryptPassword, salt, keylength)
   const iv = randomFillSync(new Uint8Array(ivlength))
   const cipher = createCipheriv(algorithm, key, iv)
   let encrypted = cipher.update(text, 'utf8', encoding)
@@ -28,7 +28,8 @@ export function encrypt(text: string): string {
 }
 
 export function _decrypt(encrypted: Encrypted): string {
-  const key = scryptSync(password, salt, keylength)
+  const { encryptPassword } = useRuntimeConfig()
+  const key = scryptSync(encryptPassword, salt, keylength)
   const iv = Uint8Array.from(Buffer.from(encrypted.iv, encoding))
   const decipher = createDecipheriv(algorithm, key, iv)
   let decrypted = decipher.update(encrypted.encrypted, encoding, 'utf8')

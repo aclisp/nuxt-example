@@ -52,6 +52,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <UButton type="submit">
         Login
       </UButton>
+      <div class="flex justify-between">
+        <ULink to="/register" class="hover:underline text-primary">
+          注册账号
+        </ULink>
+        <ULink to="/reset-password" class="hover:underline text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+          忘记密码
+        </ULink>
+      </div>
     </UForm>
   </UContainer>
 </template>

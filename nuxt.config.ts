@@ -10,5 +10,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     sendmailUser: '',
     sendmailPass: '',
+    encryptPassword: '',
   },
 })
