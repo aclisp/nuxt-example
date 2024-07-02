@@ -16,7 +16,7 @@ const icon = computed(() => {
     <div class="flex sm:hidden justify-between items-center mb-4 h-12 bg-white border-b border-gray-200 dark:border-gray-800 dark:bg-gray-900">
       <img class="w-8 h-8" src="/favicon.ico">
       <span>{{ title }}</span>
-      <UPopover v-model:open="open">
+      <UPopover v-model:open="open" :popper="{ offsetDistance: 8 }">
         <UButton variant="link" :icon="icon" />
         <template #panel>
           <div class="p-2">

@@ -13,7 +13,7 @@ const icon = computed(() => {
   <div class="z-50">
     <!-- mobile screens -->
     <div class="fixed sm:hidden left-0">
-      <UPopover v-model:open="open">
+      <UPopover v-model:open="open" :popper="{ offsetDistance: -3 }">
         <UButton variant="link" :icon="icon" />
         <template #panel>
           <div class="p-2">
