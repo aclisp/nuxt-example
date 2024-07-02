@@ -1,11 +1,15 @@
 import { DIRECTUS_URL } from './directus'
 
-export function fileIdToURL(fileId: string, accessToken?: string | null) {
+export function fileIdToURL(fileId: string, accessToken?: string | null, addTs?: number) {
+  let ts = ''
+
   if (fileId && accessToken) {
-    return `${DIRECTUS_URL}/assets/${fileId}?access_token=${accessToken}`
+    if (addTs) ts = `&ts=${addTs}`
+    return `${DIRECTUS_URL}/assets/${fileId}?access_token=${accessToken}` + ts
   }
   else if (fileId) {
-    return `${DIRECTUS_URL}/assets/${fileId}`
+    if (addTs) ts = `?ts=${addTs}`
+    return `${DIRECTUS_URL}/assets/${fileId}` + ts
   }
   else {
     return ''

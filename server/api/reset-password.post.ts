@@ -8,11 +8,16 @@ export default defineWrappedResponseHandler(async (event) => {
     return { ok: false, msg: '验证码不对' }
   }
 
+  const { defaultRoleId } = useRuntimeConfig(event)
+
   const data = await directus.request(readUsers({
     filter: { email: { _eq: email } },
   }))
   if (data.length == 0) {
     return { ok: false, msg: `这个邮箱 ${email} 还未注册` }
+  }
+  if (data[0].role !== defaultRoleId) {
+    return { ok: false, msg: `这个邮箱 ${email} 不允许重置密码` }
   }
 
   const randomPassword = parseInt(String(Math.random() * 900000 + 100000)).toString()

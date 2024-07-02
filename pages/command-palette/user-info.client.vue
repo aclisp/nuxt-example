@@ -1,55 +1,108 @@
 <script setup lang="ts">
-import { readMe } from '@directus/sdk'
+import { readMe, updateUser } from '@directus/sdk'
+import { object, string, type InferType } from 'yup'
+import type { FormSubmitEvent } from '#ui/types'
 
 definePageMeta({ middleware: 'auth' })
 
+const schema = object({
+  name: string()
+    .min(2, 'Must be at least 2 characters')
+    .required('Required'),
+  title: string(),
+  location: string(),
+  avatar: string(),
+})
+
+type Schema = InferType<typeof schema>
+
 const token = await directus.getToken()
 
-const data = await directus.request(readMe({
+const user = await directus.request(readMe({
   fields: ['*', 'role.name'],
 }))
 
-const avatar = fileIdToURL(data.avatar, token)
-const login = useLogin()
-login.value = { isLoggedIn: true, name: data.first_name, avatar }
+const state = reactive({
+  name: user.first_name ?? undefined,
+  title: user.title ?? undefined,
+  location: user.location ?? undefined,
+  avatar: user.avatar ?? undefined,
+})
+
+const ts = ref(Date.now())
+const avatar = computed(() => {
+  return fileIdToURL(state.avatar, token, ts.value)
+})
+
+const { login, resetLogin } = useLogin()
+watchEffect(() => {
+  login.value = { isLoggedIn: true, name: state.name, avatar: avatar.value }
+})
 
 async function logout() {
   await directus.logout()
-  login.value = { isLoggedIn: false, name: '', avatar: '' }
+  resetLogin()
   await navigateTo('/login', { replace: true })
+}
+
+const { fileError, onFileChanged } = useFileInput({
+  userId: user.id,
+  fileTitle: 'Avatar',
+  maxFileSize: 200000,
+  acceptedFileTypes: ['image/png', 'image/jpeg'],
+  onFileUploaded(fileId) {
+    state.avatar = fileId
+    ts.value = Date.now()
+  },
+})
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  await directus.request(updateUser(user.id, {
+    first_name: event.data.name,
+    title: event.data.title,
+    location: event.data.location,
+    avatar: event.data.avatar,
+  }))
 }
 </script>
 
 <template>
   <UContainer>
     <MySection>您已登录</MySection>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <UFormGroup label="Email">
-        <UInput :value="data.email" icon="i-heroicons-envelope" />
-      </UFormGroup>
-      <UFormGroup label="Name">
-        <UInput :value="data.first_name" icon="i-heroicons-user-circle" />
-      </UFormGroup>
-      <UFormGroup label="Title">
-        <UInput :value="data.title" icon="i-heroicons-academic-cap" />
-      </UFormGroup>
-      <UFormGroup label="Location">
-        <UInput :value="data.location" icon="i-heroicons-map-pin" />
-      </UFormGroup>
-      <UFormGroup label="Avatar">
-        <img class="w-1/2" :src="avatar">
-      </UFormGroup>
-      <UFormGroup label="Role">
-        <UInput :value="data.role.name" icon="i-heroicons-user-group" />
-      </UFormGroup>
-      <UFormGroup label="Status">
-        <UInput :value="data.status" icon="i-heroicons-check" />
-      </UFormGroup>
-    </div>
+    <UForm :schema="schema" :state="state" @submit="onSubmit">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <UFormGroup label="Email">
+          <UInput disabled :value="user.email" icon="i-heroicons-envelope" />
+        </UFormGroup>
+        <UFormGroup label="Name" name="name">
+          <UInput v-model="state.name" icon="i-heroicons-user-circle" />
+        </UFormGroup>
+        <UFormGroup label="Title" name="title">
+          <UInput v-model="state.title" icon="i-heroicons-academic-cap" />
+        </UFormGroup>
+        <UFormGroup label="Location" name="location">
+          <UInput v-model="state.location" icon="i-heroicons-map-pin" />
+        </UFormGroup>
+        <UFormGroup label="Avatar" :error="fileError">
+          <img v-if="avatar" class="max-h-40 mb-1" :src="avatar">
+          <UInput type="file" icon="i-heroicons-folder" accept="image/png, image/jpeg" @change="onFileChanged" />
+          <UInput v-model="state.avatar" type="hidden" name="avatar" />
+        </UFormGroup>
+        <UFormGroup label="Role">
+          <UInput disabled :value="user.role.name" icon="i-heroicons-user-group" />
+        </UFormGroup>
+        <UFormGroup label="Status">
+          <UInput disabled :value="user.status" icon="i-heroicons-flag" />
+        </UFormGroup>
+      </div>
+      <UButton type="submit" icon="i-heroicons-check" class="mt-4">
+        Save
+      </UButton>
+    </UForm>
     <MySection class="mt-4">
       更多操作
     </MySection>
-    <UButton icon="i-heroicons-arrow-right-end-on-rectangle" @click="logout">
+    <UButton icon="i-heroicons-arrow-left-start-on-rectangle" @click="logout">
       Logout
     </UButton>
   </UContainer>

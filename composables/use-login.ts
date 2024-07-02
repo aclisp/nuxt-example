@@ -1,5 +1,3 @@
-import { shallowRef } from 'vue'
-
 type Login = {
   isLoggedIn: boolean
   name: string
@@ -7,11 +5,14 @@ type Login = {
 }
 
 export const useLogin = () => {
-  return useState<Login>('login', () => {
-    return shallowRef({
-      isLoggedIn: false,
-      name: '',
-      avatar: '',
-    })
-  })
+  const initial = {
+    isLoggedIn: false,
+    name: '',
+    avatar: '',
+  }
+  const login = useState<Login>('login', () => shallowRef(initial))
+  const resetLogin = () => {
+    login.value = initial
+  }
+  return { login, resetLogin }
 }
