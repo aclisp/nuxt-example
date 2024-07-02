@@ -12,15 +12,19 @@ const schema = object({
   imgid: string(),
 })
 type Schema = InferType<typeof schema>
-const { data: captcha } = await useFetch('/api/generate-captcha')
-const state = reactive({
-  email: undefined,
-  captcha: undefined,
-  imgid: captcha.value?.imgid,
+const state = reactive<Schema>({
+  email: '',
+  captcha: '',
+  imgid: '',
+})
+const { data: captcha, refresh: refreshCaptcha } = await useFetch('/api/generate-captcha')
+watchEffect(() => {
+  state.imgid = captcha.value?.imgid
 })
 const toast = useToast()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   const { ok, msg } = await $fetch('/api/reset-password', { method: 'POST', body: event.data })
+  refreshCaptcha()
   let timeout, callback
   if (ok) {
     timeout = 4000
@@ -46,7 +50,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <UFormGroup label="请输入图中的验证码" name="captcha">
         <UInput v-model="state.captcha" autocomplete="off" />
         <template #hint>
-          <img :src="`data:image/png;base64,${captcha?.img}`">
+          <img :src="`data:image/png;base64,${captcha?.img}`" @click="() => refreshCaptcha()">
         </template>
       </UFormGroup>
       <UInput v-model="state.imgid" type="hidden" name="imgid" />

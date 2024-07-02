@@ -4,7 +4,7 @@ import directus from '~/utils/directus'
 export default defineWrappedResponseHandler(async (event) => {
   const body = await readBody(event)
   const { email, name, captcha, imgid } = body
-  if (Number(decrypt(imgid)) !== Number(captcha)) {
+  if (!validCaptcha(imgid, captcha)) {
     return { ok: false, msg: '验证码不对' }
   }
 
