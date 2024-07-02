@@ -12,7 +12,7 @@ const schema = object({
   imgid: string(),
 })
 type Schema = InferType<typeof schema>
-const state = reactive<Schema>({
+const state: Schema = reactive({
   email: '',
   captcha: '',
   imgid: '',
