@@ -2,11 +2,13 @@
 export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxt/image'],
+
   eslint: {
     config: {
       stylistic: true,
     },
   },
+
   runtimeConfig: {
     sendmailUser: '',
     sendmailPass: '',
@@ -14,4 +16,6 @@ export default defineNuxtConfig({
     directusServerToken: '',
     defaultRoleId: '',
   },
+
+  compatibilityDate: '2024-07-04',
 })

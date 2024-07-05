@@ -34,5 +34,6 @@ const topMenus = [
     <NuxtPage />
   </UContainer>
 
+  <UModals />
   <UNotifications />
 </template>

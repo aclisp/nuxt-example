@@ -2,6 +2,7 @@
 import { readMe, updateUser } from '@directus/sdk'
 import { object, string, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
+import { MyConfirmDialog } from '#components'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -15,6 +16,8 @@ const schema = object({
 })
 
 type Schema = InferType<typeof schema>
+
+const modal = useModal()
 
 const token = await directus.getToken()
 
@@ -40,9 +43,16 @@ watchEffect(() => {
 })
 
 async function logout() {
-  await directus.logout()
-  resetLogin()
-  await navigateTo('/login', { replace: true })
+  modal.open(MyConfirmDialog, {
+    text: 'Do you really want to logout?',
+    onNo() { modal.close() },
+    async onYes() {
+      modal.close()
+      await directus.logout()
+      resetLogin()
+      await navigateTo('/login', { replace: true })
+    },
+  })
 }
 
 const { fileError, onFileChanged } = useFileInput({
