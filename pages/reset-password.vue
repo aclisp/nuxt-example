@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { object, string, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
+import { MySuccessDialog } from '#components'
 
 const schema = object({
   email: string()
@@ -22,20 +23,24 @@ watchEffect(() => {
   state.imgid = captcha.value?.imgid
 })
 const toast = useToast()
+const modal = useModal()
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   const { ok, msg } = await $fetch('/api/reset-password', { method: 'POST', body: event.data })
   refreshCaptcha()
-  let timeout, callback
   if (ok) {
-    timeout = 4000
-    callback = () => {
-      navigateTo('/login')
-    }
+    modal.open(MySuccessDialog, {
+      preventClose: true,
+      text: msg,
+      async onOk() {
+        modal.close()
+        await navigateTo('/login')
+      },
+    })
+    return
   }
   toast.add({
     description: msg,
-    color: ok ? 'primary' : 'red',
-    timeout, callback,
+    color: 'red',
   })
 }
 </script>

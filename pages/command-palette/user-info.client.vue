@@ -2,7 +2,7 @@
 import { readMe, updateUser } from '@directus/sdk'
 import { object, string, type InferType } from 'yup'
 import type { FormSubmitEvent } from '#ui/types'
-import { MyConfirmDialog } from '#components'
+import { MyYesNoDialog } from '#components'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -43,7 +43,7 @@ watchEffect(() => {
 })
 
 async function logout() {
-  modal.open(MyConfirmDialog, {
+  modal.open(MyYesNoDialog, {
     text: 'Do you really want to logout?',
     onNo() { modal.close() },
     async onYes() {
