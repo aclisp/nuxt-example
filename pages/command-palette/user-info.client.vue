@@ -19,6 +19,8 @@ type Schema = InferType<typeof schema>
 
 const modal = useModal()
 
+const toast = useToast()
+
 const token = await directus.getToken()
 
 const user = await directus.request(readMe({
@@ -66,13 +68,22 @@ const { fileError, onFileChanged } = useFileInput({
   },
 })
 
+const loading = ref(false)
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  loading.value = true
   await directus.request(updateUser(user.id, {
     first_name: event.data.name,
     title: event.data.title,
     location: event.data.location,
     avatar: event.data.avatar,
   }))
+  toast.add({
+    description: '个人资料已更新',
+    color: 'primary',
+    timeout: 1000,
+  })
+  loading.value = false
 }
 </script>
 
@@ -105,7 +116,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <UInput disabled :value="user.status" icon="i-heroicons-flag" />
         </UFormGroup>
       </div>
-      <UButton type="submit" icon="i-heroicons-check" class="mt-4">
+      <UButton :loading="loading" type="submit" icon="i-heroicons-check" class="mt-4">
         Save
       </UButton>
     </UForm>

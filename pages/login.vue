@@ -20,7 +20,10 @@ const toast = useToast()
 
 const route = useRoute()
 
+const loading = ref(false)
+
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  loading.value = true
   const { email, password } = event.data
   let redirect = route.query.redirect as string
   if (!redirect) redirect = '/'
@@ -36,6 +39,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       color: 'red',
     })
   }
+  loading.value = false
 }
 </script>
 
@@ -49,7 +53,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <UFormGroup label="Password" name="password">
         <UInput v-model="state.password" type="password" autocomplete="on" />
       </UFormGroup>
-      <UButton type="submit">
+      <UButton type="submit" :loading="loading">
         Login
       </UButton>
       <div class="flex justify-between">

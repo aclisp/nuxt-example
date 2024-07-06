@@ -28,9 +28,12 @@ watchEffect(() => {
 })
 const toast = useToast()
 const modal = useModal()
+const loading = ref(false)
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  loading.value = true
   const { ok, msg } = await $fetch('/api/register', { method: 'POST', body: event.data })
   refreshCaptcha()
+  loading.value = false
   if (ok) {
     modal.open(MySuccessDialog, {
       preventClose: true,
@@ -66,7 +69,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </template>
       </UFormGroup>
       <UInput v-model="state.imgid" type="hidden" name="imgid" />
-      <UButton type="submit">
+      <UButton type="submit" :loading="loading">
         Register
       </UButton>
     </UForm>
