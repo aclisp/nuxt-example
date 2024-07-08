@@ -42,12 +42,12 @@ let directus: ReturnType<typeof _createDirectus>
 export function useDirectus(event?: HandlerEvent) {
   if (directus) return directus
 
-  const { public: { directusUrl } } = useRuntimeConfig(event)
-  directus = _createDirectus(directusUrl, event)
+  directus = _createDirectus(event)
   return directus
 }
 
-function _createDirectus(directusUrl: string, event?: HandlerEvent) {
+function _createDirectus(event?: HandlerEvent) {
+  const { public: { directusUrl } } = useRuntimeConfig(event)
   return createDirectus(directusUrl)
     .with(authentication('json', { storage: storage(event) }))
     .with(rest())
