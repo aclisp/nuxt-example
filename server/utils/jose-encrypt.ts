@@ -1,7 +1,7 @@
 import * as jose from 'jose'
 
-export async function joseEncrypt(text: string) {
-  const { encryptPassword } = useRuntimeConfig()
+export async function joseEncrypt(text: string, event?: HandlerEvent) {
+  const { encryptPassword } = useRuntimeConfig(event)
   console.log(`encryptPassword = (${encryptPassword})`)
   const secret = decodeBase64Url(encryptPassword)
   console.log(`secret = ${secret} (${secret.length})`)
@@ -12,8 +12,8 @@ export async function joseEncrypt(text: string) {
   return jwt
 }
 
-export async function joseDecrypt(encrypted: string) {
-  const { encryptPassword } = useRuntimeConfig()
+export async function joseDecrypt(encrypted: string, event?: HandlerEvent) {
+  const { encryptPassword } = useRuntimeConfig(event)
   const secret = decodeBase64Url(encryptPassword)
   const { payload } = await jose.jwtDecrypt(encrypted, secret)
   return payload.sub!

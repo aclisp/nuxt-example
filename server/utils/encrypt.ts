@@ -12,8 +12,8 @@ type Encrypted = {
   iv: string
 }
 
-export function _encrypt(text: string): Encrypted {
-  const { encryptPassword } = useRuntimeConfig()
+export function _encrypt(text: string, event?: HandlerEvent): Encrypted {
+  const { encryptPassword } = useRuntimeConfig(event)
   const key = scryptSync(encryptPassword, salt, keylength)
   const iv = randomFillSync(new Uint8Array(ivlength))
   const cipher = createCipheriv(algorithm, key, iv)
@@ -22,13 +22,13 @@ export function _encrypt(text: string): Encrypted {
   return { encrypted, iv: Buffer.from(iv).toString(encoding) }
 }
 
-export function encrypt(text: string): string {
-  const encrypted = _encrypt(text)
+export function encrypt(text: string, event?: HandlerEvent): string {
+  const encrypted = _encrypt(text, event)
   return encrypted.iv + encrypted.encrypted
 }
 
-export function _decrypt(encrypted: Encrypted): string {
-  const { encryptPassword } = useRuntimeConfig()
+export function _decrypt(encrypted: Encrypted, event?: HandlerEvent): string {
+  const { encryptPassword } = useRuntimeConfig(event)
   const key = scryptSync(encryptPassword, salt, keylength)
   const iv = Uint8Array.from(Buffer.from(encrypted.iv, encoding))
   const decipher = createDecipheriv(algorithm, key, iv)
@@ -37,8 +37,8 @@ export function _decrypt(encrypted: Encrypted): string {
   return decrypted
 }
 
-export function decrypt(encrypted: string): string {
+export function decrypt(encrypted: string, event?: HandlerEvent): string {
   const iv = encrypted.substring(0, ivenclen)
   const en = encrypted.substring(ivenclen)
-  return _decrypt({ encrypted: en, iv })
+  return _decrypt({ encrypted: en, iv }, event)
 }

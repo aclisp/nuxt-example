@@ -1,14 +1,14 @@
 import { authentication, createDirectus, rest } from '@directus/sdk'
 import type { AuthenticationStorage, AuthenticationData } from '@directus/sdk'
 
-const storage = () => {
+const storage = (event?: HandlerEvent) => {
   let store: AuthenticationData | null = null
   const KEY = 'znbcwrefjgfsltiu'
 
   const get = async () => {
     if (import.meta.server) {
       if (store === null) {
-        const { directusServerToken } = useRuntimeConfig()
+        const { directusServerToken } = useRuntimeConfig(event)
         store = {
           access_token: directusServerToken,
           refresh_token: null,
@@ -39,16 +39,16 @@ const storage = () => {
 
 let directus: ReturnType<typeof _createDirectus>
 
-export function useDirectus() {
+export function useDirectus(event?: HandlerEvent) {
   if (directus) return directus
 
-  const { public: { directusUrl } } = useRuntimeConfig()
-  directus = _createDirectus(directusUrl)
+  const { public: { directusUrl } } = useRuntimeConfig(event)
+  directus = _createDirectus(directusUrl, event)
   return directus
 }
 
-function _createDirectus(directusUrl: string) {
+function _createDirectus(directusUrl: string, event?: HandlerEvent) {
   return createDirectus(directusUrl)
-    .with(authentication('json', { storage: storage() }))
+    .with(authentication('json', { storage: storage(event) }))
     .with(rest())
 }

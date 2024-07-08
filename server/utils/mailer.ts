@@ -3,12 +3,12 @@ import type { Transporter } from 'nodemailer'
 
 let mailer: Transporter
 
-export async function getMailer() {
+export async function getMailer(event?: HandlerEvent) {
   if (mailer) {
     return mailer
   }
 
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
 
   const transporter = nodemailer.createTransport({
     port: 465,
