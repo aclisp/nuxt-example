@@ -1,12 +1,11 @@
-import { decrypt } from './encrypt'
-
 const imgidTrash: string[] = []
 const maxSize = 100
 
-export function validCaptcha(imgid: string, captcha: string): boolean {
+export async function validCaptcha(imgid: string, captcha: string) {
   if (imgidTrash.includes(imgid)) return false
 
-  if (Number(decrypt(imgid)) !== Number(captcha)) return false
+  const expectedCaptcha = await joseDecrypt(imgid)
+  if (Number(expectedCaptcha) !== Number(captcha)) return false
 
   imgidTrash.push(imgid)
   if (imgidTrash.length > maxSize) {

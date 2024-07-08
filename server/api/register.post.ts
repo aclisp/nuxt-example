@@ -4,7 +4,8 @@ import directus from '~/utils/directus'
 export default defineWrappedResponseHandler(async (event) => {
   const body = await readBody(event)
   const { email, name, captcha, imgid } = body
-  if (!validCaptcha(imgid, captcha)) {
+  const valid = await validCaptcha(imgid, captcha)
+  if (!valid) {
     return { ok: false, msg: '验证码不对' }
   }
 
@@ -16,7 +17,7 @@ export default defineWrappedResponseHandler(async (event) => {
   }
 
   const randomPassword = parseInt(String(Math.random() * 900000 + 100000)).toString()
-  const { defaultRoleId, sendmailUser } = useRuntimeConfig(event)
+  const { defaultRoleId } = useRuntimeConfig(event)
   await directus.request(createUser({
     first_name: name,
     email,
@@ -24,12 +25,10 @@ export default defineWrappedResponseHandler(async (event) => {
     role: defaultRoleId,
   }))
 
-  const mailer = await getMailer()
-  await mailer.sendMail({
-    from: `Email Engine <${sendmailUser}>`,
+  await sendMail({
     to: email,
     subject: '注册信息',
-    text: `您的密码是 ${randomPassword}`,
+    markdown: `您的密码是 ${randomPassword}`,
   })
 
   return { ok: true, msg: '注册成功，请检查邮件中的密码' }

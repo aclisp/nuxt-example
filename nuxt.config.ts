@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     encryptPassword: '',
     directusServerToken: '',
     defaultRoleId: '',
+    sendmailWebhook: '',
   },
 
   compatibilityDate: '2024-07-04',

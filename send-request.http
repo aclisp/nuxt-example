@@ -1,0 +1,9 @@
+POST http://localhost:8055/flows/trigger/94d77c49-e4ec-4b96-ba75-c11d58b9d628
+content-type: application/json
+#Authorization: Bearer B0cDvWqcztjJfrkyIzq5kUbB5J4jF3Nd
+
+{
+    "to": "aclisp@gmail.com",
+    "subject": "AAAAAAA",
+    "markdown": "# 大大大"
+}
