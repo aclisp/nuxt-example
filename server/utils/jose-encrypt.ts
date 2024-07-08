@@ -2,9 +2,7 @@ import * as jose from 'jose'
 
 export async function joseEncrypt(text: string, event: HandlerEvent) {
   const { encryptPassword } = useRuntimeConfig(event)
-  console.log(`encryptPassword = (${encryptPassword})`)
   const secret = decodeBase64Url(encryptPassword)
-  console.log(`secret = ${secret} (${secret.length})`)
   const jwt = await new jose.EncryptJWT()
     .setProtectedHeader({ alg: 'dir', enc: 'A128CBC-HS256' })
     .setSubject(text)
