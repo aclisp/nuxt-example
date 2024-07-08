@@ -1,5 +1,3 @@
-import { DIRECTUS_URL } from '~/utils/directus'
-
 type SendMailOptions = {
   to: string
   subject: string
@@ -7,8 +5,8 @@ type SendMailOptions = {
 }
 
 export async function sendMail(options: SendMailOptions) {
-  const { directusServerToken, sendmailWebhook } = useRuntimeConfig()
-  return await $fetch(`${DIRECTUS_URL}${sendmailWebhook}`, {
+  const { directusServerToken, sendmailWebhook, public: { directusUrl } } = useRuntimeConfig()
+  return await $fetch(`${directusUrl}${sendmailWebhook}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${directusServerToken}`,

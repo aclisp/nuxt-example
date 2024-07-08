@@ -1,5 +1,5 @@
 import { updateUser, readUsers } from '@directus/sdk'
-import directus from '~/utils/directus'
+import { useDirectus } from '~/utils/directus'
 
 export default defineWrappedResponseHandler(async (event) => {
   const body = await readBody(event)
@@ -10,7 +10,7 @@ export default defineWrappedResponseHandler(async (event) => {
   }
 
   const { defaultRoleId } = useRuntimeConfig(event)
-
+  const directus = useDirectus()
   const data = await directus.request(readUsers({
     filter: { email: { _eq: email } },
   }))

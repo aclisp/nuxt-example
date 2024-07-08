@@ -18,7 +18,7 @@ const schema = object({
 type Schema = InferType<typeof schema>
 
 const modal = useModal()
-
+const directus = useDirectus()
 const toast = useToast()
 
 const token = await directus.getToken()

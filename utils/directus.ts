@@ -1,8 +1,6 @@
 import { authentication, createDirectus, rest } from '@directus/sdk'
 import type { AuthenticationStorage, AuthenticationData } from '@directus/sdk'
 
-export const DIRECTUS_URL = 'http://192.168.0.109:8055'
-
 const storage = () => {
   let store: AuthenticationData | null = null
   const KEY = 'znbcwrefjgfsltiu'
@@ -39,8 +37,18 @@ const storage = () => {
   return { get, set } as AuthenticationStorage
 }
 
-const directus = createDirectus(DIRECTUS_URL)
-  .with(authentication('json', { storage: storage() }))
-  .with(rest())
+let directus: ReturnType<typeof _createDirectus>
 
-export default directus
+export function useDirectus() {
+  if (directus) return directus
+
+  const { public: { directusUrl } } = useRuntimeConfig()
+  directus = _createDirectus(directusUrl)
+  return directus
+}
+
+function _createDirectus(directusUrl: string) {
+  return createDirectus(directusUrl)
+    .with(authentication('json', { storage: storage() }))
+    .with(rest())
+}

@@ -4,6 +4,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // skip middleware on server
   if (import.meta.server) return
 
+  const directus = useDirectus()
   const token = await directus.getToken()
   if (token) return
 

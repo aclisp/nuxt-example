@@ -10,6 +10,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    public: {
+      directusUrl: '',
+    },
     sendmailUser: '',
     sendmailPass: '',
     encryptPassword: '',

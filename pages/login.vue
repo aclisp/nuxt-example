@@ -17,7 +17,7 @@ const state = reactive({
 })
 
 const toast = useToast()
-
+const directus = useDirectus()
 const route = useRoute()
 
 const loading = ref(false)

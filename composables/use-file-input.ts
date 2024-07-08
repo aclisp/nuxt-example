@@ -10,6 +10,7 @@ type FileInputOptions = {
 }
 
 export const useFileInput = (options: FileInputOptions) => {
+  const directus = useDirectus()
   const fileError = ref<string>()
 
   async function onFileChanged(files: FileList) {
