@@ -2,7 +2,7 @@ type SendMailOptions = {
   to: string
   subject: string
   markdown: string
-  event?: HandlerEvent
+  event: HandlerEvent
 }
 
 export async function sendMail(options: SendMailOptions) {

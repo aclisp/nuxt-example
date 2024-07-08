@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
   const { to, subject, markdown } = body
 
   try {
-    await sendMail({ to, subject, markdown })
+    await sendMail({ to, subject, markdown, event })
   }
   catch (e) {
     console.trace(String(e))

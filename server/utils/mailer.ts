@@ -3,7 +3,7 @@ import type { Transporter } from 'nodemailer'
 
 let mailer: Transporter
 
-export async function getMailer(event?: HandlerEvent) {
+export async function getMailer(event: HandlerEvent) {
   if (mailer) {
     return mailer
   }

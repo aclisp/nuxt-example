@@ -4,13 +4,13 @@ import { useDirectus } from '~/utils/directus'
 export default defineWrappedResponseHandler(async (event) => {
   const body = await readBody(event)
   const { email, captcha, imgid } = body
-  const valid = await validCaptcha(imgid, captcha)
+  const valid = await validCaptcha(imgid, captcha, event)
   if (!valid) {
     return { ok: false, msg: '验证码不对' }
   }
 
   const { defaultRoleId } = useRuntimeConfig(event)
-  const directus = useDirectus()
+  const directus = useDirectus(event)
   const data = await directus.request(readUsers({
     filter: { email: { _eq: email } },
   }))
@@ -30,6 +30,7 @@ export default defineWrappedResponseHandler(async (event) => {
     to: email,
     subject: '您的密码已重置',
     markdown: `新密码是 ${randomPassword}`,
+    event,
   })
 
   return { ok: true, msg: '密码已重置，请检查邮件中的新密码' }

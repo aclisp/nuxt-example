@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
 
-  const mailer = await getMailer()
+  const mailer = await getMailer(event)
 
   const body = await readBody(event)
   const { to, subject, text } = body
